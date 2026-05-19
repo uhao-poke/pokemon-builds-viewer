@@ -161,9 +161,10 @@ body {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 320px 1fr;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    min-height: 320px;
+    flex-shrink: 0;
 }
 
 .stat-card {
@@ -180,45 +181,213 @@ body {
 
 .chart-container {
     position: relative;
-    height: 300px;
+    height: 250px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.table-container {
-    padding: 1.5rem;
-    overflow-x: auto;
+/* タブ切り替えカード */
+.switchable-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
-.table-container h3 {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
     margin-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.view-tab {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+}
+
+.view-tab:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.view-tab.active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
+    color: #93c5fd;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.view-content {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.view-content h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.table-scroll {
+    flex: 1;
+    overflow: auto;
+    border-radius: 8px;
 }
 
 .stats-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
+    font-size: 0.85rem;
 }
 
 .stats-table th {
-    padding: 1rem;
+    padding: 0.5rem 0.6rem;
     font-weight: 600;
     color: var(--text-secondary);
     border-bottom: 1px solid var(--glass-border);
     white-space: nowrap;
+    position: sticky;
+    top: 0;
+    background: var(--glass-bg);
+    z-index: 1;
 }
 
 .stats-table td {
-    padding: 1rem;
+    padding: 0.5rem 0.6rem;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    white-space: nowrap;
 }
 
 .stats-table tr:hover td {
     background: rgba(255,255,255,0.02);
+}
+
+/* もちものクイックフィルター */
+.item-tabs-container {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 0.75rem 1.25rem;
+    backdrop-filter: blur(10px);
+}
+
+.item-tabs-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.item-tabs {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    flex: 1;
+    padding: 0.2rem 0;
+    scrollbar-width: none; /* Firefox */
+}
+
+.item-tabs::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.item-tab {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    padding: 0.5rem 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.item-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    transform: translateY(-1.5px);
+}
+
+.item-tab.active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(99, 102, 241, 0.25) 100%);
+    border-color: rgba(99, 102, 241, 0.5);
+    color: #93c5fd;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
+    font-weight: 700;
+    transform: translateY(0);
+}
+
+.tab-item-name {
+    letter-spacing: 0.2px;
+}
+
+.tab-item-count {
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.item-tab.active .tab-item-count {
+    background: rgba(59, 130, 246, 0.3);
+    color: #fff;
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+/* 努力値配分バッジ */
+.ev-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 0.25rem 0.75rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.stat-num {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.font-medium {
+    font-weight: 600;
 }
 
 .loading {
@@ -231,3 +400,52 @@ body {
 /* Animations */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .detail-panel { animation: fadeIn 0.4s ease-out; }
+
+/* 技採用率テーブル */
+.move-table-container {
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    flex-shrink: 0;
+}
+
+.move-table-container h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.move-table-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.move-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.move-table td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.move-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+}
+
+.move-bar-container {
+    width: 100%;
+    height: 18px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.move-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    min-width: 2px;
+}

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,6 +34,14 @@
                     <h2 id="detail-name">ポケモン名</h2>
                     <span class="usage-badge" id="detail-usage">採用率: --%</span>
                 </div>
+
+                <!-- もちものクイック選択タブ -->
+                <div class="item-tabs-container">
+                    <span class="item-tabs-label">もちものフィルター:</span>
+                    <div class="item-tabs" id="item-selector-tabs">
+                        <!-- JSで追加 -->
+                    </div>
+                </div>
                 
                 <div class="stats-grid">
                     <!-- もちもの割合 -->
@@ -43,35 +52,52 @@
                         </div>
                     </div>
                     
-                    <!-- 素早さ分布 -->
-                    <div class="stat-card glass-card">
-                        <h3>素早さ実数値 分布</h3>
-                        <div class="chart-container">
-                            <canvas id="speedChart"></canvas>
+                    <!-- 素早さ分布 / 実数値一覧 切り替え -->
+                    <div class="stat-card glass-card switchable-card">
+                        <div class="view-toggle">
+                            <button class="view-tab active" id="tab-speed" data-view="speed">📊 素早さ分布</button>
+                            <button class="view-tab" id="tab-table" data-view="table">📋 実数値一覧</button>
+                        </div>
+                        <div id="view-speed" class="view-content">
+                            <h3 id="speed-chart-title">素早さ実数値 分布</h3>
+                            <div class="chart-container">
+                                <canvas id="speedChart"></canvas>
+                            </div>
+                        </div>
+                        <div id="view-table" class="view-content" style="display: none;">
+                            <h3 id="table-title">実数値配分一覧</h3>
+                            <div class="table-scroll">
+                                <table class="stats-table">
+                                    <thead>
+                                        <tr>
+                                            <th>性格</th>
+                                            <th>H</th>
+                                            <th>A</th>
+                                            <th>B</th>
+                                            <th>C</th>
+                                            <th>D</th>
+                                            <th>S</th>
+                                            <th>努力値配分 (H-A-B-C-D-S)</th>
+                                            <th>採用数 (割合)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stats-tbody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="table-container glass-card">
-                    <h3>もちもの別 実数値一覧表 (最頻値)</h3>
-                    <table class="stats-table">
-                        <thead>
-                            <tr>
-                                <th>もちもの</th>
-                                <th>性格</th>
-                                <th>H</th>
-                                <th>A</th>
-                                <th>B</th>
-                                <th>C</th>
-                                <th>D</th>
-                                <th>S</th>
-                                <th>採用数</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stats-tbody">
-                            <!-- JSで追加 -->
-                        </tbody>
-                    </table>
+                <!-- 技採用率 -->
+                <div class="move-table-container glass-card" id="move-table-container">
+                    <h3 id="move-table-title">技採用率</h3>
+                    <div class="move-table-scroll">
+                        <table class="move-table">
+                            <tbody id="move-tbody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </main>
